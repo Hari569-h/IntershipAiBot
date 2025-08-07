@@ -19,9 +19,9 @@ jobs:
         python-version: '3.10'
 
     - name: Install system dependencies
-  run: |
-    sudo apt-get update
-    sudo apt-get install -y libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev libasound2t64
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev libasound2t64
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
@@ -31,7 +31,7 @@ jobs:
     - name: Install missing system dependencies for Playwright
       run: |
         sudo apt-get update
-        sudo apt-get install -y libasound2 libffi8 libx264-dev
+        sudo apt-get install -y libasound2t64 libffi8 libx264-dev
 
     - name: Install Playwright Browsers
       run: |
