@@ -49,6 +49,15 @@ jobs:
         LINKEDIN_EMAIL: ${{ secrets.LINKEDIN_EMAIL }}
         LINKEDIN_PASSWORD: ${{ secrets.LINKEDIN_PASSWORD }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         RESUME_PATH: data/resume.pdf
       run: |
+        # Create Google credentials file from secret
+        if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+          echo "$GOOGLE_APPLICATION_CREDENTIALS" > google-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=google-credentials.json
+        fi
+        
         python run_automation.py
