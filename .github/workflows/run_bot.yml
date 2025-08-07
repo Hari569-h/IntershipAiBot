@@ -29,9 +29,14 @@ jobs:
         pip install -r requirements.txt
         pip install pytest-playwright
 
+    - name: Install missing system dependencies for Playwright
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libasound2 libffi8 libx264-dev
+
     - name: Install Playwright Browsers
       run: |
-        python -m playwright install --with-deps
+        python -m playwright install
         python -m playwright install-deps
 
     - name: Verify PDF
