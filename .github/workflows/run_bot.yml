@@ -1,0 +1,49 @@
+name: Internship AI Bot Automation
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest-playwright
+
+    - name: Install Playwright Browsers
+      run: |
+        python -m playwright install --with-deps
+        python -m playwright install-deps
+
+    - name: Verify PDF
+      run: |
+        file data/resume.pdf
+        python -c "from PyPDF2 import PdfReader; PdfReader('data/resume.pdf'); print('PDF is valid')" || { echo 'Error: Invalid PDF file'; exit 1; }
+
+    - name: Run Internship AI Bot
+      env:
+        LINKEDIN_EMAIL: ${{ secrets.LINKEDIN_EMAIL }}
+        LINKEDIN_PASSWORD: ${{ secrets.LINKEDIN_PASSWORD }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        RESUME_PATH: data/resume.pdf
+      run: |
+        python run_automation.py
